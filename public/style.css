@@ -139,6 +139,7 @@ button:active {
   padding: 8px 12px;
   font-size: 14px;
   flex-shrink: 0;
+  margin-left: 10px;
 }
 
 #mealList button:hover {
