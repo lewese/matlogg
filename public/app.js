@@ -1,3 +1,13 @@
+async function loadStats() {
+  const response = await fetch("/stats/today");
+  const stats = await response.json();
+
+  document.getElementById("stat-kcal").textContent = stats.kcal;
+  document.getElementById("stat-protein").textContent = stats.protein + "g";
+  document.getElementById("stat-carbs").textContent = stats.carbs + "g";
+  document.getElementById("stat-fat").textContent = stats.fat + "g";
+}
+
 async function saveMeal() {
   const meal = {
     name: document.getElementById("name").value,
@@ -18,12 +28,14 @@ async function saveMeal() {
   document.getElementById("fat").value = "";
 
   loadMeals();
+  loadStats();
 }
 
 async function deleteMeal(id) {
   if (confirm("Är du säker på att du vill radera denna måltid?")) {
     await fetch(`/meal/${id}`, { method: "DELETE" });
     loadMeals();
+    loadStats();
   }
 }
 
@@ -61,3 +73,4 @@ async function loadMeals() {
 }
 
 loadMeals();
+loadStats();

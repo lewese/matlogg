@@ -53,4 +53,22 @@ router.delete("/meal/:id", async (req, res) => {
   }
 });
 
+router.get("/stats/today", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        COALESCE(SUM(kcal), 0)     AS kcal,
+        COALESCE(SUM(protein), 0)  AS protein,
+        COALESCE(SUM(carbs), 0)    AS carbs,
+        COALESCE(SUM(fat), 0)      AS fat
+      FROM meals
+      WHERE created_at::date = CURRENT_DATE
+    `);
+    res.send(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Databasfel");
+  }
+});
+
 module.exports = router;
